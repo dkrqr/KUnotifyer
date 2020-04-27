@@ -24,30 +24,11 @@ function undoRetweet(id){
   return response;
 }
 
-function modifyContent(content){
-  //contentを修正
-  var regExp = new RegExp("((https?|ftp):\/\/)?[-_a-zA-Z0-9]+\.[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+","g");
-  var urlString = regExp.exec(content);
-  var tweetLength = 140;
-  while(urlString!=null){
-    if(urlString.index <= tweetLength - 12){
-      tweetLength+=urlString[0].length-12;
-    }
-    else if(urlString.index < tweetLength){
-      tweetLength=urlString.index;
-    }
-    urlString = regExp.exec(content);
-  }
-  content=content.replace(/[死殺]/g,"○");
-  content=content.replace(/fuck/gi,"f**k");
-  var tweet = [content.substr(0,tweetLength),content.substr(tweetLength)];
-  return tweet;
-}
-
 // ツイートを投稿
 function postTweet(content) {
   content = modifyContent(content)[0];
   var service  = twitter.getService();
+  Logger.log("log");
   var response = service.fetch('https://api.twitter.com/1.1/statuses/update.json',
     {
     method: 'post',
@@ -105,37 +86,41 @@ function postLongTweet(originalContent, status) {
   return status;
 }
 
-//ユーザー情報を取得
-function getUserInfo() {
+//tweetを削除
+function deleteTweet(id){
   var service  = twitter.getService();
-  var response = service.fetch('https://api.twitter.com/1.1/account/verify_credentials.json');
-  response = JSON.parse(response);
+  var response = service.fetch('https://api.twitter.com/1.1/statuses/destroy/'
+                               + id + '.json'
+                               ,{
+                                 method: 'post',
+                                 muteHttpExceptions:true
+  });
   Logger.log(response);
   return response;
 }
 
-//ユーザー情報を変更
-function setUserInfo(name, url, location, description) {
-  var service  = twitter.getService();
-  var fetchUrl = 'https://api.twitter.com/1.1/account/update_profile.json?'
-  if(name)        fetchUrl += '&name='        + name;
-  if(url)         fetchUrl += '&url='         + url;
-  if(location)    fetchUrl += '&location='    + location;
-  if(description) fetchUrl += '&description=' + description;
-  fetchUrl = fetchUrl.replace(/\?\&/,'?');
-  Logger.log(fetchUrl);
-  var response = service.fetch(fetchUrl,
-    {
-    method: 'post',
-    muteHttpExceptions:true
-  });
-  response = JSON.parse(response);
-  Logger.log(response);
-  return response;
+function modifyContent(content){
+  //contentを修正
+  var regExp = new RegExp("((https?|ftp):\/\/)?[-_a-zA-Z0-9]+\.[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+","g");
+  var urlString = regExp.exec(content);
+  var tweetLength = 140;
+  while(urlString != null){
+    if(urlString.index <= tweetLength - 12){
+      tweetLength += urlString[0].length - 12;
+      urlString = regExp.exec(content);
+    }
+    else if(urlString.index < tweetLength){
+      tweetLength = urlString.index;
+      break;
+    }
+  }
+  content = content.replace(/[死殺]/g,"○");
+  content = content.replace(/fuck/gi,"f**k");
+  var tweet = [content.substr(0,tweetLength), content.substr(tweetLength)];
+  return tweet;
 }
 
 function test(){
-  var data = encodeURI("あいうえおaiueo");
-  Logger.log(data)
+  postTweet("test");
   return 0;
 }
