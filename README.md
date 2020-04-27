@@ -1,7 +1,7 @@
 # KUnotifyer
 dkrqr's twitter client
 
-~~ライブラリはTwitterWebServiceを使用
+~~ライブラリはTwitterWebServiceを使用  
 プロジェクトキーは1rgo8rXsxi1DxI_5Xgo_t3irTw1Y5cxl2mGSkbozKsSXf2E_KBBPC3xTF~~
 
 2020/04/27追記  
@@ -12,10 +12,20 @@ dkrqr's twitter client
 
 もしくは
 1. 1KZkNP_iRfp6ySN4g6SteEPd1p5BFBw3apafXN7TgaohoBjDs0LkxyVhzをライブラリに追加
+追記終了
 
-プロジェクトプロパティのキー
-'consumerKey'にコンシューマーキーを
-'consumerSecret'にコンシューマーシークレットを
+初めて使うときには，
+
+twitterアプリケーションのcallbackURLに以下のURLを設定
+https://script.google.com/macros/d/[スクリプトID]/usercallback
+
+プロジェクトプロパティを開き，  
+'consumerKey'にコンシューマーキーを  
+'consumerSecret'にコンシューマーシークレットを  
 登録
 
-初めて使うときにauth()を実行する
+authorization()を実行し，ログに記録されるurlにアクセスして認証。
+
+参考：  
+https://qiita.com/akkey2475/items/ad190a507b4a7b7dc17c  
+https://qiita.com/kawarayu/items/d5792c2c70f532c01b9a
