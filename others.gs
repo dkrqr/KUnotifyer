@@ -103,3 +103,29 @@ function unfollow(screenName){
   Logger.log(response);
   return response;
 }
+
+function favorite(id){
+  var service  = twitter.getService();
+  var response = service.fetch('https://api.twitter.com/1.1/favorites/create.json?id='
+                               + id
+                               ,{
+                                 method: 'post',
+                                 muteHttpExceptions:true
+  });
+  response = JSON.parse(response);
+  Logger.log(response);
+  return response;
+}
+
+function undoFavorite(id){
+  var service  = twitter.getService();
+  var response = service.fetch('https://api.twitter.com/1.1/favorites/destroy.json?id='
+                               + id
+                               ,{
+                                 method: 'post',
+                                 muteHttpExceptions:true
+  });
+  response = JSON.parse(response);
+  Logger.log(response);
+  return response;
+}
