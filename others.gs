@@ -23,6 +23,22 @@ function getUserTimelineSinceId(screenName, sinceId) {
   return response;
 }
 
+// タイムラインを取得。全ての引数はoption
+//sinceId以降，maxId以前のTLを取得。excludeRepliesをtrueにするとリプライが含まれない
+function getHomeTimeline(sinceId,maxId,excludeReplies) {
+  var service  = twitter.getService();
+  var response = service.fetch('https://api.twitter.com/1.1/statuses/home_timeline.json'
+                               + '?count=200'
+                               + (sinceId ? ('&since_id=' + sinceId) : ('') )
+                               + '&trim_user=true'
+                               + (maxId ? ('&max_id=' + maxId) : ('') )
+                               + (excludeReplies ? ('&exclude_replies=' + excludeReplies) : ('') )
+  );
+  response = JSON.parse(response);
+  Logger.log(response);
+  return response;
+}
+
 //検索
 //searchTweet("hoge", "fuga", 2000-01-01)で@fugaの2000-01-01以前のhogeを含むtweetを返す
 function searchTweet(searchWords, from, until){
