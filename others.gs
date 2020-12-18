@@ -6,7 +6,7 @@ function getUserTimeline(screenName) {
                                + '&trim_user=true'  
   );
   response = JSON.parse(response);
-//  Logger.log(response);
+  //Logger.log(response);
   return response;
 }
 
@@ -19,7 +19,7 @@ function getUserTimelineSinceId(screenName, sinceId) {
                                + '&since_id=' + sinceId
   );
   response = JSON.parse(response);
-  Logger.log(response);
+  //Logger.log(response);
   return response;
 }
 
@@ -35,7 +35,7 @@ function getHomeTimeline(sinceId,maxId,excludeReplies) {
                                + (excludeReplies ? ('&exclude_replies=' + excludeReplies) : ('') )
   );
   response = JSON.parse(response);
-  Logger.log(response);
+  //Logger.log(response);
   return response;
 }
 
@@ -54,7 +54,7 @@ function searchTweet(searchWords, from, until){
                                + (until ? ('&until=' + until) : ('') )
   );
   response = JSON.parse(response);
-  Logger.log(response);
+  //Logger.log(response);
   return response;
 }
 
@@ -63,7 +63,7 @@ function getUserInfo() {
   var service  = twitter.getService();
   var response = service.fetch('https://api.twitter.com/1.1/account/verify_credentials.json');
   response = JSON.parse(response);
-  Logger.log(response);
+  //Logger.log(response);
   return response;
 }
 
@@ -76,19 +76,20 @@ function setUserInfo(name, url, location, description) {
   if(location)    fetchUrl += '&location='    + location;
   if(description) fetchUrl += '&description=' + description;
   fetchUrl = fetchUrl.replace(/\?\&/,'?');
-  Logger.log(fetchUrl);
+  //Logger.log(fetchUrl);
   var response = service.fetch(fetchUrl,
     {
     method: 'post',
     muteHttpExceptions:true
   });
   response = JSON.parse(response);
-  Logger.log(response);
+  //Logger.log(response);
   return response;
 }
 
 //フォロー
 function follow(screenName, follow){
+  //follow:Enable notifications for the target user. default:true
   var service  = twitter.getService();
   var fetchUrl = 'https://api.twitter.com/1.1/friendships/create.json?'
   if(screenName) fetchUrl += '&screen_name=' + screenName;
@@ -100,7 +101,7 @@ function follow(screenName, follow){
     muteHttpExceptions:true
   });
   response = JSON.parse(response);
-  Logger.log(response);
+  //Logger.log(response);
   return response;
 }
 
@@ -116,7 +117,7 @@ function unfollow(screenName){
     muteHttpExceptions:true
   });
   response = JSON.parse(response);
-  Logger.log(response);
+  //Logger.log(response);
   return response;
 }
 
@@ -129,7 +130,7 @@ function favorite(id){
                                  muteHttpExceptions:true
   });
   response = JSON.parse(response);
-  Logger.log(response);
+  //Logger.log(response);
   return response;
 }
 
@@ -142,6 +143,6 @@ function undoFavorite(id){
                                  muteHttpExceptions:true
   });
   response = JSON.parse(response);
-  Logger.log(response);
+  //Logger.log(response);
   return response;
 }

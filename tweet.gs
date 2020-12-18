@@ -7,7 +7,7 @@ function retweet(id){
                                  muteHttpExceptions:true
   });
   response = JSON.parse(response);
-  Logger.log(response);
+  Logger.log("retweet:%s",response["id_str"]);
   return response;
 }
 
@@ -20,7 +20,7 @@ function undoRetweet(id){
                                  muteHttpExceptions:true
   });
   response = JSON.parse(response);
-  Logger.log(response);
+  Logger.log("undoRetweet:%s",response["id_str"]);
   return response;
 }
 
@@ -37,7 +37,7 @@ function postTweet(content) {
     },
     muteHttpExceptions:true
   });
-  Logger.log(response);
+  Logger.log("postTweet:%s",response["id_str"]);
   return response;
 }
 
@@ -50,7 +50,7 @@ function postReply(content, status) {
   }
   if(typeof(inReplyToStatusId) == "string"){
     inReplyToStatusId = inReplyToStatusId.substr(1,inReplyToStatusId.length-2);
-    Logger.log(inReplyToStatusId);
+    //Logger.log(inReplyToStatusId);
   }
   
   content = modifyContent(content)[0];
@@ -65,7 +65,7 @@ function postReply(content, status) {
     },
     muteHttpExceptions:true
   });
-  Logger.log(response);
+  Logger.log("postreply:%s to %s",response["id_str"],inReplyToStatusId);
   return response;
 }
 
@@ -79,10 +79,11 @@ function postLongTweet(originalContent, status) {
     content = temp[1];
     status = postReply(tweet,status);
     if(status.getResponseCode() != 200){
+      Logger.log("postLongTweet failed");
       return status;
     }
   }
-  Logger.log(status);
+  Logger.log("postLongTweet(last):%s", status["id_str"]);
   return status;
 }
 
@@ -95,7 +96,7 @@ function deleteTweet(id){
                                  method: 'post',
                                  muteHttpExceptions:true
   });
-  Logger.log(response);
+  Logger.log("deleted:\n%s",response);
   return response;
 }
 
