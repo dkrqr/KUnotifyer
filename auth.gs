@@ -1,3 +1,5 @@
+//https://developer.twitter.com/en/docs/twitter-api/api-reference-index
+
 var properties = PropertiesService.getScriptProperties();
 var twitter = TwitterWebService.getInstance(
   properties.getProperty('consumerKey'),     // 作成したアプリケーションのConsumer Key

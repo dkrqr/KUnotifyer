@@ -1,32 +1,11 @@
-function retweet(id){
-  var service  = twitter.getService();
-  var response = service.fetch('https://api.twitter.com/1.1/statuses/retweet/'
-                               + id + '.json'
-                               ,{
-                                 method: 'post',
-                                 muteHttpExceptions:true
-  });
-  response = JSON.parse(response);
-  Logger.log("retweet:%s",response["id_str"]);
-  return response;
-}
-
-function undoRetweet(id){
-  var service  = twitter.getService();
-  var response = service.fetch('https://api.twitter.com/1.1/statuses/unretweet/'
-                               + id + '.json'
-                               ,{
-                                 method: 'post',
-                                 muteHttpExceptions:true
-  });
-  response = JSON.parse(response);
-  Logger.log("undoRetweet:%s",response["id_str"]);
-  return response;
-}
-
-// ツイートを投稿
+/**
+ * tweetを投稿
+ *
+ * @param {string} content tweetしたい文字列
+ * @return {HTTPResponse} https://api.twitter.com/1.1/statuses/update.jsonをfetchした結果
+ */
 function postTweet(content) {
-  content = modifyContent(content)[0];
+  content = modifyContent_(content)[0];
   var service  = twitter.getService();
   Logger.log("log");
   var response = service.fetch('https://api.twitter.com/1.1/statuses/update.json',
@@ -41,7 +20,13 @@ function postTweet(content) {
   return response;
 }
 
-// リプライを投稿
+/**
+ * リプライを投稿
+ *
+ * @param {string} content tweetしたい文字列
+ * @param {HTTPResponse} status リプしたいtweetのHTTPResponse
+ * @return {HTTPResponse} https://api.twitter.com/1.1/statuses/update.jsonをfetchした結果
+ */
 function postReply(content, status) {
   var inReplyToStatusId;
   if(typeof(status) == "object"){
@@ -53,7 +38,7 @@ function postReply(content, status) {
     //Logger.log(inReplyToStatusId);
   }
   
-  content = modifyContent(content)[0];
+  content = modifyContent_(content)[0];
   var service  = twitter.getService();
   var response = service.fetch('https://api.twitter.com/1.1/statuses/update.json',
     {
@@ -69,12 +54,18 @@ function postReply(content, status) {
   return response;
 }
 
-// 一続きのtweetを投稿
+/**
+ * 一続きのtweetを投稿
+ *
+ * @param {string} originalContent tweetしたい文字列
+ * @param {HTTPResponse} status リプしたいtweetのHTTPResponse
+ * @return {HTTPResponse} 最後のhttps://api.twitter.com/1.1/statuses/update.jsonをfetchした結果
+ */
 function postLongTweet(originalContent, status) {
   var content = originalContent;
   var tweet;
   while(content != ""){
-    var temp = modifyContent(content);
+    var temp = modifyContent_(content);
     tweet = temp[0];
     content = temp[1];
     status = postReply(tweet,status);
@@ -87,7 +78,12 @@ function postLongTweet(originalContent, status) {
   return status;
 }
 
-//tweetを削除
+/**
+ * tweetを削除
+ *
+ * @param {string} id 削除したいtweetのid
+ * @return {HTTPResponse} https://api.twitter.com/1.1/statuses/destroy.jsonをfetchした結果
+ */
 function deleteTweet(id){
   var service  = twitter.getService();
   var response = service.fetch('https://api.twitter.com/1.1/statuses/destroy/'
@@ -100,7 +96,7 @@ function deleteTweet(id){
   return response;
 }
 
-function modifyContent(content){
+function modifyContent_(content){
   //contentを修正
   var regExp = new RegExp("((https?|ftp):\/\/)?[-_a-zA-Z0-9]+\.[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+","g");
   var urlString = regExp.exec(content);
@@ -121,7 +117,7 @@ function modifyContent(content){
   return tweet;
 }
 
-function test(){
+function test_(){
   postTweet("test");
   return 0;
 }
