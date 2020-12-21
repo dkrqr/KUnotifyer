@@ -83,3 +83,47 @@ function unfollow(screenName){
   //Logger.log(response);
   return response;
 }
+
+/**
+ * ユーザのフォロワーを200件取得
+ * 
+ * @param {string} screenName フォロワーを取得したいユーザのscreenName(optional)
+ * @param {string} cursor returnの"next_cursor_str"を入れると次の200件が取得できる(optional)
+ * @param {Boolean} skipStatus trueにするとuser objectsにstatusが含まれなくなる(optional)
+ * @return {HTTPResponse} https://api.twitter.com/1.1/followers/list.json をfetchした結果
+ */
+function getFollower(screenName,cursor,skipStatus) {
+  let service  = twitter.getService();
+  let response = service.fetch('https://api.twitter.com/1.1/followers/list.json'
+                               + '?count=200'
+                               + (screenName? ('&screen_name=' + screenName) : ('') )
+                               + (cursor? ('&cursor=' + cursor) : ('') )
+                               + '&skip_status=' + (skipStatus? ('true') : ('false'))
+  );
+  response = JSON.parse(response);
+  //Logger.log(response);
+  return response;
+}
+
+/**
+ * ユーザのフォロワーを全件取得
+ * 
+ * @param {string} screenName フォロワーを取得したいユーザのscreenName。省略した場合は自分自身(optional)
+ * @param {Boolean} skipStatus trueにするとuser objectsにstatusが含まれなくなる(optional)
+ * @return {JSON} {count: フォロワー数, users: [{screen_name: , id_str: , name: }]}
+ */
+function getFollowerAll(screenName, skipStatus) {
+  let cursor = "-1";
+  let response;
+  let screenNameList = {count: 0,users: []};
+  do{
+    response = getFollower(screenName, cursor, skipStatus);
+    cursor = response.next_cursor_str;
+    for(i in response.users){
+      screenNameList.users.push({screen_name: response.users[i].screen_name, id_str: response.users[i].id_str, name: response.users[i].name});
+      screenNameList.count ++;
+    }
+  }while(cursor != "0");
+  //Logger.log(screenNameList);
+  return screenNameList;
+}

@@ -3,6 +3,7 @@
  *
  * @param {string} screenName タイムラインを取得したいuserのscreenname
  * @param {string} sinceId このidのtweet以降のTLを取得(optional)
+ * @param {string} maxId このid以前のTLを取得(optional)
  * @return {HTTPResponse} https://api.twitter.com/1.1/statuses/user_timeline.jsonをfetchした結果
  */
 function getUserTimeline(screenName, sinceId) {
@@ -11,6 +12,7 @@ function getUserTimeline(screenName, sinceId) {
                                + '?screen_name=' + screenName
                                + '&trim_user=true'  
                                + (sinceId? ('&since_id=' + sinceId) : ('') )
+                               + (maxId? ('&max_id=' + maxId) : (''))
   );
   response = JSON.parse(response);
   //Logger.log(response);

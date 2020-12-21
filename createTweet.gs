@@ -7,7 +7,6 @@
 function postTweet(content) {
   content = modifyContent_(content)[0];
   var service  = twitter.getService();
-  Logger.log("log");
   var response = service.fetch('https://api.twitter.com/1.1/statuses/update.json',
     {
     method: 'post',
