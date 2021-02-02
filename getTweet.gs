@@ -66,7 +66,7 @@ function getHomeTimeline(sinceId, maxId, excludeReplies) {
  * 
  * @param {string} searchWords 検索のクエリ
  * @param {string} from ユーザのscreen name(from:hoge)(optional)
- * @param {string} until この日までのtweetを検索。(optional)(YYYY-MM－DD)
+ * @param {string} until この日までのtweetを検索。7日前まで。(optional)(YYYY-MM－DD)
  * @return {HTTPResponse} https://api.twitter.com/1.1/statuses/home_timeline.json をfetchした結果
  */
 function searchTweet(searchWords, from, until){
