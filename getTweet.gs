@@ -6,7 +6,7 @@
  * @param {string} maxId このid以前のTLを取得(optional)
  * @return {HTTPResponse} https://api.twitter.com/1.1/statuses/user_timeline.jsonをfetchした結果
  */
-function getUserTimeline(screenName, sinceId) {
+function getUserTimeline(screenName, sinceId, maxId) {
   var service  = twitter.getService();
   var response = service.fetch('https://api.twitter.com/1.1/statuses/user_timeline.json'
                                + '?screen_name=' + screenName
